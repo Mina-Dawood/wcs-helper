@@ -1,0 +1,32 @@
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+}
+
+button {
+  margin-right: 8px;
+}
+
+mat-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copy-icon {
+  cursor: pointer;
+  opacity: 0;
+}
+
+mat-card:hover {
+  .copy-icon {
+    opacity: 1;
+  }
+}
+
+.json-field {
+  width: 100%;
+}
