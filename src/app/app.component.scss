@@ -4,6 +4,7 @@
 
 .mat-form-field {
   margin-top: 16px;
+  width: 100%;
 }
 
 button {
@@ -19,6 +20,10 @@ mat-card {
 .copy-icon {
   cursor: pointer;
   opacity: 0;
+  @media only screen and (max-width: 600px) {
+    /* For tablets & Mobile: */
+    opacity: 1;
+  }
 }
 
 mat-card:hover {
@@ -27,12 +32,18 @@ mat-card:hover {
   }
 }
 
-.json-field {
-  width: 100%;
-}
-
 footer {
   position: fixed;
   bottom: 0;
   width: 100%;
+  background-color: #fff;
+}
+
+.container {
+  margin-bottom: 70px;
+}
+
+.result {
+  word-wrap: break-word;
+  width: 80%;
 }

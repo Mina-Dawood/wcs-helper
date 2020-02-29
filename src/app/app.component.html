@@ -2,30 +2,16 @@
   <span>WCS Helper</span>
 </mat-toolbar>
 <div class="container">
-  <!-- <form class="example-form">
-    <mat-form-field class="example-full-width">
-      <mat-label>Enter the full json file</mat-label>
-      <textarea matInput placeholder="{key: value, ...}"></textarea>
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <mat-label>Enter the value</mat-label>
-      <textarea matInput placeholder="Ex. Entendido"></textarea>
-    </mat-form-field>
-  </form> -->
-
-  <!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
-    {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-  </button> -->
-  <mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-horizontal-stepper *ngIf="!isMobile" [linear]="isLinear" #stepper>
     <mat-step [stepControl]="firstFormGroup">
       <form [formGroup]="firstFormGroup">
         <ng-template matStepLabel>Fill out JSON object</ng-template>
-        <mat-form-field class="json-field">
+        <mat-form-field>
           <mat-label>JSON Object</mat-label>
           <textarea matInput placeholder="{key: value, ...}" formControlName="json" required></textarea>
         </mat-form-field>
         <div>
-          <button mat-raised-button matStepperNext>Next</button>
+          <button mat-raised-button (click)="checkJSON(stepper)">Next</button>
         </div>
       </form>
     </mat-step>
@@ -46,21 +32,69 @@
             <span matBadge="{{results?.length}}" matBadgeOverlap="false">Results </span>
           </h2>
           <input type="text" value="5555" #resultValue style="opacity: 0;height: 0px;">
-          <mat-card *ngFor="let result of results; let i = index" class="mt-3">{{result}}<mat-icon class="copy-icon"
-              (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+          <mat-card *ngFor="let result of results; let i = index" class="mt-3">
+            <div class="result">{{result}}</div>
+            <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
           </mat-card>
         </div>
       </form>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
-      <p>You are now done.</p>
+      <p>You are now done, thank you for using this tool ( 👁 ͜ʖ 👁 )✌</p>
       <div>
         <button mat-raised-button matStepperPrevious>Back</button>
         <button mat-raised-button color="accent" (click)="stepper.reset()">Reset</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>
+
+  <mat-vertical-stepper *ngIf="isMobile" [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Fill out JSON object</ng-template>
+        <mat-form-field>
+          <mat-label>JSON Object</mat-label>
+          <textarea matInput placeholder="{key: value, ...}" formControlName="json" required></textarea>
+        </mat-form-field>
+        <div>
+          <button mat-raised-button (click)="checkJSON(stepper)">Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Fill out the value</ng-template>
+        <mat-form-field>
+          <mat-label>Enter the value</mat-label>
+          <input matInput formControlName="text" placeholder="Ex. Entendido" required>
+        </mat-form-field>
+        <div>
+          <button mat-raised-button matStepperPrevious>Back</button>
+          <button mat-raised-button color="primary" (click)="search()">Search</button>
+          <button mat-raised-button matStepperNext>Done</button>
+        </div>
+        <div class="container mt-5">
+          <h2>
+            <span matBadge="{{results?.length}}" matBadgeOverlap="false">Results </span>
+          </h2>
+          <input type="text" value="5555" #resultValue style="opacity: 0;height: 0px;">
+          <mat-card *ngFor="let result of results; let i = index" class="mt-3">
+            <div class="result">{{result}}</div>
+            <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+          </mat-card>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done, thank you for using this tool ( 👁 ͜ʖ 👁 )✌</p>
+      <div>
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="accent" (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
 
 </div>
 <!-- Footer -->
