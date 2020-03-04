@@ -2,6 +2,15 @@
   margin-top: 8px;
 }
 
+textarea {
+  height: 150px;
+}
+
+mat-spinner {
+  margin-left: 40%;
+  position: absolute;
+}
+
 .mat-form-field {
   margin-top: 16px;
   width: 100%;
@@ -45,5 +54,49 @@ footer {
 
 .result {
   word-wrap: break-word;
-  width: 80%;
+  width: 62%;
 }
+
+.full-status {
+  color: #ff4081;
+}
+.tooltip {
+  background-color: #ff4081;
+}
+
+.partial {
+  font-weight: 100;
+}
+
+mat-panel-title {
+  height: 60px;
+  align-items: center;
+}
+mat-expansion-panel-header {
+  height: inherit;
+}
+mat-expansion-panel {
+  margin-top: 10px;
+}
+
+.img-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: -50px;
+  &.is-mobile {
+    margin-top: 10px;
+  }
+  img {
+    width: 200px;
+    border: 1px dashed #e1dbdb;
+    &.full-width {
+      width: 100%;
+    }
+  }
+}
+
+// .mat-expansion-panel-content {
+//   max-height: 100vh;
+//   overflow-y: scroll;
+// }

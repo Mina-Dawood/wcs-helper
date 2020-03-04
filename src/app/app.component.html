@@ -2,15 +2,19 @@
   <span>WCS Helper</span>
 </mat-toolbar>
 <div class="container">
+
   <mat-horizontal-stepper *ngIf="!isMobile" [linear]="isLinear" #stepper>
     <mat-step [stepControl]="firstFormGroup">
       <form [formGroup]="firstFormGroup">
         <ng-template matStepLabel>Fill out JSON object</ng-template>
         <mat-form-field>
           <mat-label>JSON Object</mat-label>
-          <textarea matInput placeholder="{key: value, ...}" formControlName="json" required></textarea>
+          <mat-spinner *ngIf="isLoading"></mat-spinner>
+          <textarea [disabled]="isLoading" matInput placeholder="{key: value, ...}" formControlName="json"
+            required></textarea>
         </mat-form-field>
         <div>
+          <!-- <button mat-raised-button (click)="openDialog()">OR Load from URL</button> -->
           <button mat-raised-button (click)="checkJSON(stepper)">Next</button>
         </div>
       </form>
@@ -18,24 +22,62 @@
     <mat-step [stepControl]="secondFormGroup">
       <form [formGroup]="secondFormGroup">
         <ng-template matStepLabel>Fill out the value</ng-template>
+        <mat-checkbox (change)="search($event.checked)">Full Match</mat-checkbox>
         <mat-form-field>
           <mat-label>Enter the value</mat-label>
-          <input matInput formControlName="text" placeholder="Ex. Entendido" required>
+          <input matInput #searchValue formControlName="text" placeholder="Ex. Entendido" required>
         </mat-form-field>
         <div>
           <button mat-raised-button matStepperPrevious>Back</button>
           <button mat-raised-button color="primary" (click)="search()">Search</button>
           <button mat-raised-button matStepperNext>Done</button>
         </div>
-        <div class="container mt-5">
-          <h2>
-            <span matBadge="{{results?.length}}" matBadgeOverlap="false">Results </span>
-          </h2>
+        <div class="img-container" [ngClass]="{'is-mobile': isMobile}">
+          <img *ngIf="isImage" [ngClass]="{'full-width': isMobile}" [src]="domain + searchValue.value">
+        </div>
+        <div class="container mt-5 p-0">
+          <!-- <h2>
+            <span matBadge="{{resultsByValue?.length}}" matBadgeOverlap="false">Results By Value </span>
+          </h2> -->
           <input type="text" value="5555" #resultValue style="opacity: 0;height: 0px;">
-          <mat-card *ngFor="let result of results; let i = index" class="mt-3">
-            <div class="result">{{result}}</div>
-            <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
-          </mat-card>
+          <mat-accordion>
+            <mat-expansion-panel *ngIf="resultsByValue?.length">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <strong matBadge="{{resultsByValue?.length}}" matBadgeOverlap="false">Results By Value </strong>
+                </mat-panel-title>
+                <!-- <mat-panel-description>
+                  Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                </mat-panel-description> -->
+              </mat-expansion-panel-header>
+              <mat-card *ngFor="let result of resultsByValue; let i = index" class="mt-3">
+                <div class="result">{{result.value}}</div>
+                <strong mat-raised-button #tooltip="matTooltip"
+                  [matTooltip]="result.isFull ? 'Entered value fully matched this path\'s value' : 'Entered value partially matched this path\'s value'"
+                  [matTooltipPosition]="'above'" [ngClass]="{'partial': result.isFull}"
+                  class="full-status">{{result.isFull ? 'FULL' : 'PARTIAL'}}</strong>
+                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+              </mat-card>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf="resultsByKey?.length">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <strong matBadge="{{resultsByKey?.length}}" matBadgeOverlap="false">Results By Key Name </strong>
+                </mat-panel-title>
+                <!-- <mat-panel-description>
+                  Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                </mat-panel-description> -->
+              </mat-expansion-panel-header>
+              <mat-card *ngFor="let result of resultsByKey; let i = index" class="mt-3">
+                <div class="result">{{result.value}}</div>
+                <strong mat-raised-button #tooltip="matTooltip"
+                  [matTooltip]="result.isFull ? 'Entered value fully matched this path\'s last key' : 'Entered value partially matched this path\'s last key'"
+                  [matTooltipPosition]="'above'" [ngClass]="{'partial': result.isFull}"
+                  class="full-status">{{result.isFull ? 'FULL' : 'PARTIAL'}}</strong>
+                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+              </mat-card>
+            </mat-expansion-panel>
+          </mat-accordion>
         </div>
       </form>
     </mat-step>
@@ -55,9 +97,12 @@
         <ng-template matStepLabel>Fill out JSON object</ng-template>
         <mat-form-field>
           <mat-label>JSON Object</mat-label>
-          <textarea matInput placeholder="{key: value, ...}" formControlName="json" required></textarea>
+          <mat-spinner *ngIf="isLoading"></mat-spinner>
+          <textarea [disabled]="isLoading" matInput placeholder="{key: value, ...}" formControlName="json"
+            required></textarea>
         </mat-form-field>
         <div>
+          <!-- <button mat-raised-button (click)="openDialog()">OR Load from URL</button> -->
           <button mat-raised-button (click)="checkJSON(stepper)">Next</button>
         </div>
       </form>
@@ -65,24 +110,62 @@
     <mat-step [stepControl]="secondFormGroup">
       <form [formGroup]="secondFormGroup">
         <ng-template matStepLabel>Fill out the value</ng-template>
+        <mat-checkbox (change)="search($event.checked)">Full Match</mat-checkbox>
         <mat-form-field>
           <mat-label>Enter the value</mat-label>
-          <input matInput formControlName="text" placeholder="Ex. Entendido" required>
+          <input matInput #searchValue formControlName="text" placeholder="Ex. Entendido" required>
         </mat-form-field>
         <div>
           <button mat-raised-button matStepperPrevious>Back</button>
           <button mat-raised-button color="primary" (click)="search()">Search</button>
           <button mat-raised-button matStepperNext>Done</button>
         </div>
-        <div class="container mt-5">
-          <h2>
-            <span matBadge="{{results?.length}}" matBadgeOverlap="false">Results </span>
-          </h2>
+        <div class="img-container" [ngClass]="{'is-mobile': isMobile}">
+          <img *ngIf="isImage" [ngClass]="{'full-width': isMobile}" [src]="domain + searchValue.value">
+        </div>
+        <div class="container mt-5 p-0">
+          <!-- <h2>
+            <span matBadge="{{resultsByValue?.length}}" matBadgeOverlap="false">Results By Value </span>
+          </h2> -->
           <input type="text" value="5555" #resultValue style="opacity: 0;height: 0px;">
-          <mat-card *ngFor="let result of results; let i = index" class="mt-3">
-            <div class="result">{{result}}</div>
-            <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
-          </mat-card>
+          <mat-accordion>
+            <mat-expansion-panel *ngIf="resultsByValue?.length">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <strong matBadge="{{resultsByValue?.length}}" matBadgeOverlap="false">Results By Value </strong>
+                </mat-panel-title>
+                <!-- <mat-panel-description>
+                  Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                </mat-panel-description> -->
+              </mat-expansion-panel-header>
+              <mat-card *ngFor="let result of resultsByValue; let i = index" class="mt-3">
+                <div class="result">{{result.value}}</div>
+                <strong mat-raised-button #tooltip="matTooltip"
+                  [matTooltip]="result.isFull ? 'Entered value fully matched this path\'s value' : 'Entered value partially matched this path\'s value'"
+                  [matTooltipPosition]="'above'" [ngClass]="{'partial': result.isFull}"
+                  class="full-status">{{result.isFull ? 'FULL' : 'PARTIAL'}}</strong>
+                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+              </mat-card>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf="resultsByKey?.length">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <strong matBadge="{{resultsByKey?.length}}" matBadgeOverlap="false">Results By Key Name </strong>
+                </mat-panel-title>
+                <!-- <mat-panel-description>
+                  Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                </mat-panel-description> -->
+              </mat-expansion-panel-header>
+              <mat-card *ngFor="let result of resultsByKey; let i = index" class="mt-3">
+                <div class="result">{{result.value}}</div>
+                <strong mat-raised-button #tooltip="matTooltip"
+                  [matTooltip]="result.isFull ? 'Entered value fully matched this path\'s last key' : 'Entered value partially matched this path\'s last key'"
+                  [matTooltipPosition]="'above'" [ngClass]="{'partial': result.isFull}"
+                  class="full-status">{{result.isFull ? 'FULL' : 'PARTIAL'}}</strong>
+                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+              </mat-card>
+            </mat-expansion-panel>
+          </mat-accordion>
         </div>
       </form>
     </mat-step>
