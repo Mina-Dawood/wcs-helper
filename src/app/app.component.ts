@@ -5,6 +5,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material/dialog';
 import { UrlDialogComponent } from './url-dialog/url-dialog.component';
 import { HttpClient } from '@angular/common/http';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -120,9 +121,23 @@ export class AppComponent implements OnInit {
     }
     return;
   }
+  getObjectValueByPath(fieldPath: string) {
+    const parts = fieldPath.split('.');
+    /** Clone JSON object */
+    let obj = JSON.parse(JSON.stringify(this.jsonObject));
+    parts.forEach((part, index) => {
+      if (!obj[parts[index]]) {
+        obj[parts[index]] = {};
+      }
+      obj = obj[parts[index]];
+    });
 
-  addToClipboard(el: HTMLInputElement, result: string) {
-    el.value = result;
+    return obj;
+  }
+
+  addToClipboard(el: HTMLInputElement, result: unknown) {
+    const c: JsonPipe = new JsonPipe();
+    el.value = typeof result === 'string' ? result : c.transform(result);
     el.select();
     document.execCommand('copy');
     el.setSelectionRange(0, 0);

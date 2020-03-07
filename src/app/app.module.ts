@@ -19,11 +19,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { GetValueByPathPipe } from './get-value-by-path.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UrlDialogComponent
+    UrlDialogComponent,
+    GetValueByPathPipe
   ],
   imports: [
     BrowserModule,

@@ -21,10 +21,10 @@
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
       <form [formGroup]="secondFormGroup">
-        <ng-template matStepLabel>Fill out the value</ng-template>
+        <ng-template matStepLabel>Fill out the value/key</ng-template>
         <mat-checkbox (change)="search($event.checked)">Full Match</mat-checkbox>
         <mat-form-field>
-          <mat-label>Enter the value</mat-label>
+          <mat-label>Enter the value/key</mat-label>
           <input matInput #searchValue formControlName="text" placeholder="Ex. Entendido" required>
         </mat-form-field>
         <div>
@@ -39,7 +39,7 @@
           <!-- <h2>
             <span matBadge="{{resultsByValue?.length}}" matBadgeOverlap="false">Results By Value </span>
           </h2> -->
-          <input type="text" value="5555" #resultValue style="opacity: 0;height: 0px;">
+          <input type="text" value="555" #resultValue style="opacity: 0;height: 0px;">
           <mat-accordion>
             <mat-expansion-panel *ngIf="resultsByValue?.length">
               <mat-expansion-panel-header>
@@ -51,12 +51,25 @@
                 </mat-panel-description> -->
               </mat-expansion-panel-header>
               <mat-card *ngFor="let result of resultsByValue; let i = index" class="mt-3">
-                <div class="result">{{result.value}}</div>
+                <div class="result">
+                  <p>
+                    {{result.value}}
+                  </p>
+                  <div class="path-value-container">
+                    <p class="path-value" mat-raised-button #tooltip="matTooltip"
+                      [matTooltip]="jsonObject | getValueByPath:result.value|json" [matTooltipPosition]="'above'">
+                      {{jsonObject | getValueByPath:result.value|json}}
+                    </p>
+                    <mat-icon class="copy-icon is-value"
+                      (click)="addToClipboard(resultValue, getObjectValueByPath(result.value))">filter_none
+                    </mat-icon>
+                  </div>
+                </div>
                 <strong mat-raised-button #tooltip="matTooltip"
-                  [matTooltip]="result.isFull ? 'Entered value fully matched this path\'s value' : 'Entered value partially matched this path\'s value'"
+                  [matTooltip]="result.isFull ? 'Entered value is FULLY matched this path\'s value' : 'Entered value is PARTIALLY matched this path\'s value'"
                   [matTooltipPosition]="'above'" [ngClass]="{'partial': result.isFull}"
                   class="full-status">{{result.isFull ? 'FULL' : 'PARTIAL'}}</strong>
-                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result.value)">filter_none</mat-icon>
               </mat-card>
             </mat-expansion-panel>
             <mat-expansion-panel *ngIf="resultsByKey?.length">
@@ -69,12 +82,25 @@
                 </mat-panel-description> -->
               </mat-expansion-panel-header>
               <mat-card *ngFor="let result of resultsByKey; let i = index" class="mt-3">
-                <div class="result">{{result.value}}</div>
+                <div class="result">
+                  <p>
+                    {{result.value}}
+                  </p>
+                  <div class="path-value-container">
+                    <p class="path-value" mat-raised-button #tooltip="matTooltip"
+                      [matTooltip]="jsonObject | getValueByPath:result.value|json" [matTooltipPosition]="'above'">
+                      {{jsonObject | getValueByPath:result.value|json}}
+                    </p>
+                    <mat-icon class="copy-icon is-value"
+                      (click)="addToClipboard(resultValue, getObjectValueByPath(result.value))">filter_none
+                    </mat-icon>
+                  </div>
+                </div>
                 <strong mat-raised-button #tooltip="matTooltip"
-                  [matTooltip]="result.isFull ? 'Entered value fully matched this path\'s last key' : 'Entered value partially matched this path\'s last key'"
+                  [matTooltip]="result.isFull ? 'Entered value is FULLY matched this path\'s last key' : 'Entered value is PARTIALLY matched this path\'s last key'"
                   [matTooltipPosition]="'above'" [ngClass]="{'partial': result.isFull}"
                   class="full-status">{{result.isFull ? 'FULL' : 'PARTIAL'}}</strong>
-                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result.value)">filter_none</mat-icon>
               </mat-card>
             </mat-expansion-panel>
           </mat-accordion>
@@ -109,10 +135,10 @@
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
       <form [formGroup]="secondFormGroup">
-        <ng-template matStepLabel>Fill out the value</ng-template>
+        <ng-template matStepLabel>Fill out the value/key</ng-template>
         <mat-checkbox (change)="search($event.checked)">Full Match</mat-checkbox>
         <mat-form-field>
-          <mat-label>Enter the value</mat-label>
+          <mat-label>Enter the value/key</mat-label>
           <input matInput #searchValue formControlName="text" placeholder="Ex. Entendido" required>
         </mat-form-field>
         <div>
@@ -139,12 +165,25 @@
                 </mat-panel-description> -->
               </mat-expansion-panel-header>
               <mat-card *ngFor="let result of resultsByValue; let i = index" class="mt-3">
-                <div class="result">{{result.value}}</div>
+                <div class="result">
+                  <p>
+                    {{result.value}}
+                  </p>
+                  <div class="path-value-container">
+                    <p class="path-value" mat-raised-button #tooltip="matTooltip"
+                      [matTooltip]="jsonObject | getValueByPath:result.value|json" [matTooltipPosition]="'above'">
+                      {{jsonObject | getValueByPath:result.value|json}}
+                    </p>
+                    <mat-icon class="copy-icon is-value"
+                      (click)="addToClipboard(resultValue, getObjectValueByPath(result.value))">filter_none
+                    </mat-icon>
+                  </div>
+                </div>
                 <strong mat-raised-button #tooltip="matTooltip"
-                  [matTooltip]="result.isFull ? 'Entered value fully matched this path\'s value' : 'Entered value partially matched this path\'s value'"
+                  [matTooltip]="result.isFull ? 'Entered value is FULLY matched this path\'s value' : 'Entered value is PARTIALLY matched this path\'s value'"
                   [matTooltipPosition]="'above'" [ngClass]="{'partial': result.isFull}"
                   class="full-status">{{result.isFull ? 'FULL' : 'PARTIAL'}}</strong>
-                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result.value)">filter_none</mat-icon>
               </mat-card>
             </mat-expansion-panel>
             <mat-expansion-panel *ngIf="resultsByKey?.length">
@@ -157,12 +196,25 @@
                 </mat-panel-description> -->
               </mat-expansion-panel-header>
               <mat-card *ngFor="let result of resultsByKey; let i = index" class="mt-3">
-                <div class="result">{{result.value}}</div>
+                <div class="result">
+                  <p>
+                    {{result.value}}
+                  </p>
+                  <div class="path-value-container">
+                    <p class="path-value" mat-raised-button #tooltip="matTooltip"
+                      [matTooltip]="jsonObject | getValueByPath:result.value|json" [matTooltipPosition]="'above'">
+                      {{jsonObject | getValueByPath:result.value|json}}
+                    </p>
+                    <mat-icon class="copy-icon is-value"
+                      (click)="addToClipboard(resultValue, getObjectValueByPath(result.value))">filter_none
+                    </mat-icon>
+                  </div>
+                </div>
                 <strong mat-raised-button #tooltip="matTooltip"
-                  [matTooltip]="result.isFull ? 'Entered value fully matched this path\'s last key' : 'Entered value partially matched this path\'s last key'"
+                  [matTooltip]="result.isFull ? 'Entered value is FULLY matched this path\'s last key' : 'Entered value is PARTIALLY matched this path\'s last key'"
                   [matTooltipPosition]="'above'" [ngClass]="{'partial': result.isFull}"
                   class="full-status">{{result.isFull ? 'FULL' : 'PARTIAL'}}</strong>
-                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result)">filter_none</mat-icon>
+                <mat-icon class="copy-icon" (click)="addToClipboard(resultValue, result.value)">filter_none</mat-icon>
               </mat-card>
             </mat-expansion-panel>
           </mat-accordion>
@@ -180,13 +232,8 @@
   </mat-vertical-stepper>
 
 </div>
-<!-- Footer -->
-<footer class="page-footer font-small special-color-dark pt-4">
-  <!-- Copyright -->
+<!-- <footer class="page-footer font-small special-color-dark pt-4">
   <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="https://github.com/Mina-Dawood"> Mina Dawood</a>
+    <a href="https://www.linkedin.com/in/mina-dawoud-28490584/"> Mina Dawood</a>
   </div>
-  <!-- Copyright -->
-
-</footer>
-<!-- Footer -->
+</footer> -->

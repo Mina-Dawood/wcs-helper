@@ -23,7 +23,6 @@ button {
 mat-card {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .copy-icon {
@@ -32,6 +31,11 @@ mat-card {
   @media only screen and (max-width: 600px) {
     /* For tablets & Mobile: */
     opacity: 1;
+  }
+  &.is-value {
+    font-size: 16px;
+    color: #3f51b5;
+    margin-left: 10%;
   }
 }
 
@@ -55,6 +59,21 @@ footer {
 .result {
   word-wrap: break-word;
   width: 62%;
+  .path-value-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 160%;
+  }
+  .path-value {
+    margin: -10px 0 0 10px;
+    color: #3f51b5;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 1.2em;
+    white-space: nowrap;
+  }
 }
 
 .full-status {
