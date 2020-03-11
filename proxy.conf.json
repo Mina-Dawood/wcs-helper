@@ -1,7 +1,0 @@
-{
-    "/mves/*": {
-        "target": "https://assets-es-prodref.myvdf.aws.cps.vodafone.com",
-        "secure": false,
-        "changeOrigin": true
-    }
-}
