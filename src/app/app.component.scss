@@ -18,6 +18,10 @@ mat-spinner {
 
 button {
   margin-right: 8px;
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+    margin-bottom: 8px;
+  }
 }
 
 mat-card {

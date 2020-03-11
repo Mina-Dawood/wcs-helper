@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material/dialog';
 import { UrlDialogComponent } from './url-dialog/url-dialog.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JsonPipe } from '@angular/common';
 
 @Component({
@@ -43,20 +43,39 @@ export class AppComponent implements OnInit {
     });
   }
 
-  openDialog(): void {
+  loadFromAPI(env: string, stepper: MatStepper): void {
+    this.isLoading = true;
+    this.http.get(`https://wcs-helper.herokuapp.com/api/${env}`).subscribe(data => {
+      this.isLoading = false;
+      this.firstFormGroup.controls.json.setValue(JSON.stringify(data));
+      setTimeout(() => {
+        this.checkJSON(stepper);
+      }, 2000);
+    }, (err) => {
+      this.isLoading = false;
+      this.openSnackBar('Something went Wrong, Try Again!', 'Ok');
+    });
+  }
+
+  openDialog(stepper: MatStepper): void {
     const dialogRef = this.dialog.open(UrlDialogComponent, {
       width: '500px'
     });
 
     dialogRef.afterClosed().subscribe(url => {
-      this.isLoading = true;
-      this.http.get(url).subscribe(data => {
-        this.isLoading = false;
-        this.firstFormGroup.controls.json.setValue(JSON.stringify(data));
-      }, err => {
-        this.isLoading = false;
-        this.openSnackBar('Please Enter Valid URL, Try Again!', 'Ok');
-      });
+      if (url) {
+        this.isLoading = true;
+        this.http.get(`https://wcs-helper.herokuapp.com/api/load-json?url=${url}`).subscribe(data => {
+          this.isLoading = false;
+          this.firstFormGroup.controls.json.setValue(JSON.stringify(data));
+          setTimeout(() => {
+            this.checkJSON(stepper);
+          }, 2000);
+        }, (err) => {
+          this.isLoading = false;
+          this.openSnackBar('Something went Wrong, Try Again!', 'Ok');
+        });
+      }
     });
   }
 

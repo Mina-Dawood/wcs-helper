@@ -13,8 +13,16 @@
           <textarea [disabled]="isLoading" matInput placeholder="{key: value, ...}" formControlName="json"
             required></textarea>
         </mat-form-field>
+        <!-- <iframe src="https://assets-es-prodref.myvdf.aws.cps.vodafone.com/mves/content" frameborder="0"></iframe> -->
         <div>
-          <!-- <button mat-raised-button (click)="openDialog()">OR Load from URL</button> -->
+          <button mat-raised-button color="primary" (click)="loadFromAPI('prod', stepper)">Load from Production</button>
+          <button mat-raised-button color="primary" (click)="loadFromAPI('prodref', stepper)">Load from Prodref</button>
+          <button mat-raised-button color="primary" (click)="loadFromAPI('uat', stepper)">Load from UAT</button>
+          <button mat-raised-button color="primary" (click)="loadFromAPI('staging2', stepper)">Load from
+            Staging2</button>
+          <br>
+          <br>
+          <button mat-raised-button (click)="openDialog(stepper)">OR Load From API</button>
           <button mat-raised-button (click)="checkJSON(stepper)">Next</button>
         </div>
       </form>
@@ -128,7 +136,13 @@
             required></textarea>
         </mat-form-field>
         <div>
-          <!-- <button mat-raised-button (click)="openDialog()">OR Load from URL</button> -->
+          <button mat-raised-button color="primary" (click)="loadFromAPI('prod', stepper)">Load from Production</button>
+          <button mat-raised-button color="primary" (click)="loadFromAPI('prodref', stepper)">Load from Prodref</button>
+          <button mat-raised-button color="primary" (click)="loadFromAPI('uat', stepper)">Load from UAT</button>
+          <button mat-raised-button color="primary" (click)="loadFromAPI('staging2', stepper)">Load from
+            Staging2</button>
+          <br>
+          <button mat-raised-button (click)="openDialog(stepper)">OR Load From API</button>
           <button mat-raised-button (click)="checkJSON(stepper)">Next</button>
         </div>
       </form>
@@ -234,6 +248,6 @@
 </div>
 <footer class="page-footer font-small special-color-dark pt-4">
   <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a target="_blank" href="https://www.linkedin.com/in/mina-dawoud-28490584/"> Mina Dawoud</a>
+    <a href="https://www.linkedin.com/in/mina-dawoud-28490584/"> Mina Dawood</a>
   </div>
 </footer>
